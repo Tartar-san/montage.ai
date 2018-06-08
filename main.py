@@ -35,6 +35,7 @@ if __name__ == "__main__":
     # TODO: Write extraction from the chunks
 
     timestamps = audio_analyzer.get_timestamps()
+    sec_timestamps = [i / 1000 for i in timestamps]
     chunk_audio_features = audio_analyzer.get_chunks_features()
 
     print("Generating video...")
@@ -42,22 +43,30 @@ if __name__ == "__main__":
     scenes_sequence = []
 
     last_time = 0
-    for time, audio_features in zip(timestamps, chunk_audio_features):
-        possible_chunks = list(filter(lambda x: x[1] >= time-last_time, chunks))
+    end_time = audio_analyzer.get_duration()
+    for time, audio_features in zip(sec_timestamps, chunk_audio_features):
+        possible_chunks = list(filter(lambda x: x[1] >= (time-last_time)*1000, chunks))
 
         if len(possible_chunks) == 0:
             break
 
         # TODO: Write choice based on clustering
         chunk = random.choice(possible_chunks)
-        scene = VideoFileClip(chunk[0]).subclip(0, (time-last_time)/1000).set_start(last_time)
+        scene = VideoFileClip(chunk[0], audio=False).set_start(last_time).set_end(time)
         scenes_sequence.append(scene)
         chunks.remove(chunk)
         last_time = time
 
+    possible_chunks = list(filter(lambda x: x[1] >= (end_time-last_time)*1000, chunks))
+
+    if len(possible_chunks) > 0:
+        chunk = random.choice(possible_chunks)
+        scene = VideoFileClip(chunk[0], audio=False).set_start(last_time).set_end(end_time)
+        scenes_sequence.append(scene)
+
     audio_track = AudioFileClip(args["music"])
     music_video = CompositeVideoClip(scenes_sequence)
-    music_video.set_audio(audio_track)
+    music_video = music_video.set_audio(audio_track)
     music_video.write_videofile(args["output_path"])
 
 

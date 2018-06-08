@@ -6,6 +6,7 @@ class AudioAnalyzer:
 
     def __init__(self, audio_path):
         self.audio_path = audio_path
+        self.duration = None
         self.pks_timestamps = []
         self.pks_frames = []
         self.chunk_features = []
@@ -58,6 +59,11 @@ class AudioAnalyzer:
         peak_timestamps = [times[peak] for peak in peaks]
         return peak_timestamps
 
+    def get_duration(self):
+        if not self.processed:
+            self.run()
+        return self.duration
+
     # def save_timestamps(self):
     #     to_save_path = os.path.join(self.out_path, os.path.basename(self.audio_path).split(".")[0]+".txt")
     #     with open(to_save_path, "w") as f:
@@ -95,6 +101,7 @@ class AudioAnalyzer:
 
     def run(self):
         y, sr = librosa.load(self.audio_path)
+        self.duration = librosa.core.get_duration(y, sr)
         self.features = self.extract_features(y, sr)
         self.pks_timestamps = self.peaks_timestamps(y, sr)
         self.pks_frames = librosa.time_to_frames(times=self.pks_timestamps, sr=sr)
