@@ -50,7 +50,7 @@ class AudioAnalyzer:
         return features
 
     @staticmethod
-    def peaks_timestamps(y, sr, pre_max=10, post_max=10, pre_avg=15, post_avg=15, delta=2.0, wait=40):
+    def peaks_timestamps(y, sr, pre_max=10, post_max=10, pre_avg=40, post_avg=40, delta=2.0, wait=40):
         onset_env = librosa.onset.onset_strength(y=y, sr=sr,
                                                  hop_length=512,
                                                  aggregate=np.median)
@@ -84,7 +84,8 @@ class AudioAnalyzer:
         """:return timestamps in msecs"""
         if not self.processed:
             self.run()
-        return [1000*i for i in self.pks_timestamps]
+        # -50 ms to change scene a little earlier. it makes effect better
+        return [1000*i - 50 for i in self.pks_timestamps]
 
     def get_min_max_intervals(self):
         """
@@ -97,7 +98,7 @@ class AudioAnalyzer:
         for tm in self.pks_timestamps:
             differences.append(tm-lst)
             lst = tm
-        return 1000*min(differences), 1000*max(differences)
+        return 1000*min(differences)+1, 1000*max(differences)+1
 
     def run(self):
         y, sr = librosa.load(self.audio_path)
@@ -118,6 +119,6 @@ class AudioAnalyzer:
 
 
 if __name__ == "__main__":
-    test_path = "music/superorganism something-for-your-m-i-n-d.wav"
+    test_path = "music/leapmap.wav"
     a = AudioAnalyzer(test_path)
-    a.run()
+    print(a.run())
