@@ -1,0 +1,8 @@
+tensorflow
+cv2
+numpy
+matplotlib
+moviepy
+ffmpy
+pytube
+
