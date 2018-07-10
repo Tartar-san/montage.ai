@@ -1,13 +1,14 @@
-from ChunkExtractor import ChunkExtractor
-from VideoFeatureExtractor import VideoFeatureExtractor
-from AudioAnalyzer import AudioAnalyzer
-from ChunksClustering import ChunksClustering
-from moviepy.editor import *
-from config import *
 import argparse
-import random
 import os
+import random
+
 import numpy as np
+from ChunksClustering import ChunksClustering
+from VideoFeatureExtractor import VideoFeatureExtractor
+from moviepy.editor import *
+
+from audio_analysis.AudioAnalyzer import AudioAnalyzer
+from video_analysis.ChunkExtractor import ChunkExtractor
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
