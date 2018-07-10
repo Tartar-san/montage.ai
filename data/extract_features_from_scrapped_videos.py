@@ -1,11 +1,12 @@
-import libs.librosa as librosa
-import ffmpy
 import os
-import numpy as np
-from AudioAnalyzer import AudioAnalyzer
-from VideoFeatureExtractor import VideoFeatureExtractor
-from OpticalFlowAnalyzer import OpticalFlowAnalyzer
 
+import ffmpy
+import numpy as np
+from VideoFeatureExtractor import VideoFeatureExtractor
+
+import libs.librosa as librosa
+from audio_analysis.AudioAnalyzer import AudioAnalyzer
+from video_analysis.OpticalFlowAnalyzer import OpticalFlowAnalyzer
 
 a = AudioAnalyzer("")
 v = VideoFeatureExtractor()

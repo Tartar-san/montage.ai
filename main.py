@@ -3,8 +3,8 @@ import os
 import random
 
 import numpy as np
-from ChunksClustering import ChunksClustering
-from VideoFeatureExtractor import VideoFeatureExtractor
+from video_analysis.ChunksClustering import ChunksClustering
+from video_analysis.VideoFeatureExtractor import VideoFeatureExtractor
 from moviepy.editor import *
 
 from audio_analysis.AudioAnalyzer import AudioAnalyzer
